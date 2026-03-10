@@ -22,3 +22,6 @@ To install the development version:
 devtools::install_github("stevelane/superNetballR@develop")
 ```
 
+## Notes
+
+The package has been updated to account for the super goal in 2020. Ladders and points have been adjusted for this. If you want to use the old scoring systems, these are available using `_pre_2020` versions of the appropriate functions.
