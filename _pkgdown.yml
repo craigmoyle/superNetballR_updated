@@ -4,10 +4,12 @@ template:
 
 authors:
   - Steve Lane:
-    href: https://gtown-ds.netlify.com/
+      href: https://gtown-ds.netlify.com/
+  - Craig Moyle:
+      href: https://github.com/craigmoyle
 
 navbar:
   type: inverse
   right:
     - icon: fa-github fa-lg
-      href: https://github.com/SteveLane/superNetballR/
+      href: https://github.com/craigmoyle/superNetballR_updated/

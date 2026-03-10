@@ -33,6 +33,14 @@ downloadMatch <- function(comp_id, round_id, game_id) {
         ".json"
     )
     dat <- httr::GET(pg)
-    dat_list <- httr::content(dat, "parsed")$matchStats
+    httr::stop_for_status(dat, call. = FALSE)
+    dat_list <- httr::content(
+        dat,
+        as = "parsed",
+        type = "application/json"
+    )$matchStats
+    if (is.null(dat_list)) {
+        stop("Champion Data response did not include matchStats.", call. = FALSE)
+    }
     dat_list
 }

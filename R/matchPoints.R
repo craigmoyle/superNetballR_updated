@@ -16,9 +16,9 @@ matchPoints <- function(df) {
     dplyr::filter(stat == "goal_from_zone2") %>%
     dplyr::group_by(squadName) %>%
     dplyr::summarise(goals2 = sum(value) * 2)
-  goals <- left_join(goals1, goals2, by = "squadName") %>%
-    mutate(goals = goals + goals2) %>%
-    select(-goals2)
+  goals <- dplyr::left_join(goals1, goals2, by = "squadName") %>%
+    dplyr::mutate(goals = goals + goals2) %>%
+    dplyr::select(-goals2)
   home <- df %>%
     dplyr::filter(stat == "homeTeam") %>%
     dplyr::group_by(squadName) %>%

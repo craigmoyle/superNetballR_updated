@@ -15,10 +15,11 @@ library(superNetballR)
 
 ################################################################################
 ## Load modules.
-lst_modules <- list.files(
-    here::here("inst/shiny-examples/superNetballR/modules/"), full.names = TRUE
-)
-lapply(lst_modules, function(x) source(x, echo = FALSE))
+modules_dir <- here::here("inst/shiny-examples/superNetballR/modules/")
+if (dir.exists(modules_dir)) {
+    lst_modules <- list.files(modules_dir, full.names = TRUE)
+    invisible(lapply(lst_modules, function(x) source(x, echo = FALSE)))
+}
 
 ################################################################################
 ## Load 2017 player data
