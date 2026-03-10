@@ -13,17 +13,37 @@ The current Champion Data iStats portal still exposes the same zone-based result
 
 ## Installation
 
-Installation in R requires `devtools`. To install, run the following from an R session:
+Installation in R requires `remotes`. To install, run the following from an R session:
 
 ``` R
-devtools::install_github("craigmoyle/superNetballR_updated")
+install.packages("remotes")
+remotes::install_github("craigmoyle/superNetballR_updated")
 ```
 
 To install the current `main` branch explicitly:
 
 ``` R
-devtools::install_github("craigmoyle/superNetballR_updated@main")
+remotes::install_github("craigmoyle/superNetballR_updated@main")
 ```
+
+## Current behavior
+
+- `downloadMatch()` validates competition, round, and game identifiers, retries transient HTTP failures, and errors clearly if the Champion Data payload is missing `matchStats`.
+- `matchPoints()` and `ladders()` implement the current super shot scoring model for 2020+ data.
+- `matchPoints_pre_2020()` and `ladders_pre_2020()` remain available for legacy seasons and older points systems.
+- The package includes a `testthat` suite and a GitHub Actions `R-CMD-check` workflow for ongoing maintenance.
+
+## Development
+
+The repository now uses GitHub Actions instead of Travis CI. Local developer commands are available through the `Makefile`:
+
+```sh
+make test
+make build
+make check
+```
+
+`make check` uses base `R CMD build` and `R CMD check`, while CI regenerates package documentation before running `R-CMD-check`.
 
 ## Notes
 

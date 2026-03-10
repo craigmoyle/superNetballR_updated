@@ -15,6 +15,11 @@ safe_percentage <- function(goals_for, goals_against) {
 #' @return Data frame containing the ladder position of all teams. If round and
 #'     game are not supplied, the ladder position is calculated using all match
 #'     data present in the \code{df} supplied.
+#' @details
+#' \code{ladders()} uses the current 2020+ scoring helpers, while
+#' \code{ladders_pre_2020()} uses the legacy scoring pipeline. Ladder
+#' percentages are protected against divide-by-zero by returning \code{Inf}
+#' when a team has not conceded.
 #'
 #' @export
 ladders <- function(df, round_num = NULL, game_num = NULL, old_system = FALSE) {

@@ -57,6 +57,10 @@ extract_match_stats <- function(payload) {
 #'     download. There are four games per round in the regular season, two games
 #'     in the semi finals, one game for the prelim, and one grand final.
 #' @return A list containing game and player data for the match.
+#' @details
+#' \code{downloadMatch()} validates the supplied identifiers, retries transient
+#' HTTP failures, and raises an explicit error if the Champion Data response no
+#' longer includes a \code{matchStats} object.
 #'
 #' @examples
 #' \dontrun{

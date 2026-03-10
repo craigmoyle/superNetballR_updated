@@ -20,6 +20,11 @@ in the semi finals, one game for the prelim, and one grand final.}
 \value{
 A list containing game and player data for the match.
 }
+\details{
+\code{downloadMatch()} validates the supplied identifiers, retries transient
+HTTP failures, and raises an explicit error if the Champion Data response no
+longer includes a \code{matchStats} object.
+}
 \description{
 \code{downloadMatch} downloads match and player data for a single match.
 }

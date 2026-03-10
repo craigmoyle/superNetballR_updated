@@ -5,6 +5,9 @@
 #' @param df Match data.
 #'
 #' @return A data frame containing the final scores, and points for the ladder.
+#' @details
+#' \code{matchPoints()} treats \code{goal_from_zone1} as one point and
+#' \code{goal_from_zone2} as two points, matching the current super shot era.
 #' @export
 matchPoints <- function(df) {
   ## This first section calculates points based on the old system.
@@ -56,6 +59,10 @@ matchPoints <- function(df) {
 #' @param df Match data.
 #'
 #' @return A data frame containing the final scores, and points for the ladder.
+#' @details
+#' \code{matchPoints_pre_2020()} uses the original goals statistic for match
+#' results and also reports the newer quarter-points summary in
+#' \code{points_new}.
 #' @export
 matchPoints_pre_2020 <- function(df) {
     ## This first section calculates points based on the old system.

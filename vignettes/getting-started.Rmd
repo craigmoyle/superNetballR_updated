@@ -28,6 +28,8 @@ This vignette provides an overview to get you started with using `superNetballR`
 
 Data are sourced from `https://mc.championdata.com/data/` using competition, round, and game identifiers. The bundled examples below use the 2017 home-and-away competition ID (`10083`) and the 2017 finals competition ID (`10084`). The full processed 2017 datasets are supplied with this package, while newer seasons can still be queried with the appropriate competition IDs from the current iStats portal.
 
+If the live endpoint returns a transient HTTP error, `downloadMatch()` will retry before failing. If the response no longer includes a `matchStats` object, the function stops with an explicit error so schema changes are easier to detect.
+
 To download statistics from a single match, you use the `downloadMatch` function. As an example, the following code will download the match from round 5, game 3:
 
 ```{r get-data-function,eval=FALSE}
@@ -91,3 +93,22 @@ ladder
 ```
 
 The round number is provided above, as the home and away season contained 14 rounds.
+
+# Legacy scoring helpers
+
+For seasons prior to the super shot era, use the `_pre_2020` helpers. These retain the legacy match-points calculation while still exposing the newer quarter-points summary where it is useful for comparison.
+
+```{r ladders-pre-2020, eval=FALSE}
+legacy_ladder <- ladders_pre_2020(season_2017, round_num = 14, old_system = TRUE)
+legacy_ladder
+```
+
+# Development workflow
+
+This fork is maintained with automated tests and a GitHub Actions `R-CMD-check` workflow. For local work, the repository `Makefile` exposes the same core tasks:
+
+```{r dev-workflow, eval=FALSE}
+make test
+make build
+make check
+```
