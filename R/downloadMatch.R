@@ -1,3 +1,50 @@
+validate_identifier <- function(value, name) {
+    if (length(value) != 1 || is.na(value)) {
+        stop(name, " must be a single value.", call. = FALSE)
+    }
+
+    value <- as.character(value)
+    if (!grepl("^[0-9]+$", value)) {
+        stop(name, " must contain digits only.", call. = FALSE)
+    }
+
+    value
+}
+
+validate_positive_whole_number <- function(value, name) {
+    value <- validate_identifier(value, name)
+    value <- as.integer(value)
+
+    if (value < 1) {
+        stop(name, " must be greater than or equal to 1.", call. = FALSE)
+    }
+
+    value
+}
+
+build_match_url <- function(comp_id, round_id, game_id) {
+    comp_id <- validate_identifier(comp_id, "comp_id")
+    round_id <- validate_positive_whole_number(round_id, "round_id")
+    game_id <- validate_positive_whole_number(game_id, "game_id")
+
+    sprintf(
+        "https://mc.championdata.com/data/%s/%s%02d%02d.json",
+        comp_id,
+        comp_id,
+        round_id,
+        game_id
+    )
+}
+
+extract_match_stats <- function(payload) {
+    dat_list <- payload$matchStats
+    if (is.null(dat_list)) {
+        stop("Champion Data response did not include matchStats.", call. = FALSE)
+    }
+
+    dat_list
+}
+
 #' Download data from a single match
 #'
 #' \code{downloadMatch} downloads match and player data for a single match.
@@ -18,29 +65,20 @@
 #'
 #' @export
 downloadMatch <- function(comp_id, round_id, game_id) {
-    r_id <- ifelse(
-        round_id < 10,
-        paste0("0", as.character(round_id)),
-        as.character(round_id)
+    pg <- build_match_url(comp_id, round_id, game_id)
+    dat <- httr::RETRY(
+        "GET",
+        pg,
+        httr::timeout(30),
+        times = 3,
+        pause_base = 1,
+        terminate_on = c(400, 401, 403, 404),
+        quiet = TRUE
     )
-    pg <- paste0(
-        "https://mc.championdata.com/data/",
-        comp_id,
-        "/",
-        comp_id,
-        r_id,
-        paste0("0", as.character(game_id)),
-        ".json"
-    )
-    dat <- httr::GET(pg)
     httr::stop_for_status(dat, call. = FALSE)
-    dat_list <- httr::content(
+    extract_match_stats(httr::content(
         dat,
         as = "parsed",
         type = "application/json"
-    )$matchStats
-    if (is.null(dat_list)) {
-        stop("Champion Data response did not include matchStats.", call. = FALSE)
-    }
-    dat_list
+    ))
 }

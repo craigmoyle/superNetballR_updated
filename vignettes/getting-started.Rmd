@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with superNetballR"
-author: "Steve Lane"
+author: "Steve Lane and Craig Moyle"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -20,13 +20,13 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette provides an overview to get you started with using `superNetballR`. As at 2018-04-08, this package contains the full 2017 season match statistics and player statistics.
+This vignette provides an overview to get you started with using `superNetballR`. The package ships with the full 2017 season match and player statistics, while the live Champion Data iStats portal still publishes compatible match JSON for current seasons.
 
- *2020-08-08 Update*: The package has been updated to include the players team name in the full player statistics. This will make it easier to analyse player trends by team. The 2017 data has been updated accordingly.
+*Current fork note*: the package has been updated for the post-2020 super shot scoring model, and `downloadMatch()` now validates competition, round, and game identifiers before requesting data.
 
 # Sourcing Match Data
 
-Data are sourced from 'https://mc.championdata.com/data/' under certain match and round id's. The 2017 home and away season is in the 10083 folder, whilst the finals are in the 10084 folder. The full (processed) data are supplied with this package.
+Data are sourced from `https://mc.championdata.com/data/` using competition, round, and game identifiers. The bundled examples below use the 2017 home-and-away competition ID (`10083`) and the 2017 finals competition ID (`10084`). The full processed 2017 datasets are supplied with this package, while newer seasons can still be queried with the appropriate competition IDs from the current iStats portal.
 
 To download statistics from a single match, you use the `downloadMatch` function. As an example, the following code will download the match from round 5, game 3:
 

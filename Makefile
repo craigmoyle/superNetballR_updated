@@ -1,28 +1,32 @@
 # Makefile
-# Time-stamp: <2018-04-08 09:52:43 (slane)>
-.PHONY: all document build test check checking install winbuild site
+.PHONY: all build check checking clean document install site test winbuild
 
-all: document build check install site
+PKG_TARBALL := $(shell Rscript -e "desc <- read.dcf('DESCRIPTION')[1, ]; cat(sprintf('%s_%s.tar.gz', desc[['Package']], desc[['Version']]))")
 
-checking: document build test check
+all: document test check install
+
+checking: document test check
 
 document:
-	Rscript -e "devtools::document()"
+	Rscript -e "roxygen2::roxygenise()"
 
 build:
-	Rscript -e "devtools::build()"
+	R CMD build .
 
 test:
-	Rscript -e "devtools::test()"
+	Rscript -e "testthat::test_dir('tests/testthat', reporter = 'summary', stop_on_failure = TRUE)"
 
-check:
-	Rscript -e "devtools::check()"
+check: build
+	R CMD check --no-manual --as-cran $(PKG_TARBALL)
 
 install:
-	Rscript -e "devtools::install(build_vignettes = TRUE, upgrade_dependencies = FALSE)"
+	R CMD INSTALL .
 
 winbuild:
-	Rscript -e "devtools::build_win(version = 'R-devel', quiet = TRUE)"
+	@echo "Use the GitHub Actions R-CMD-check workflow for Windows validation."
 
 site:
-	Rscript -e "pkgdown::clean_site(); pkgdown::build_site()"
+	Rscript -e "pkgdown::build_site()"
+
+clean:
+	rm -rf *.tar.gz *.Rcheck

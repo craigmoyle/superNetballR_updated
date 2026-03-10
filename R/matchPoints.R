@@ -11,13 +11,16 @@ matchPoints <- function(df) {
   goals1 <- df %>%
     dplyr::filter(stat == "goal_from_zone1") %>%
     dplyr::group_by(squadName) %>%
-    dplyr::summarise(goals = sum(value))
+    dplyr::summarise(goals = sum(value, na.rm = TRUE), .groups = "drop")
   goals2 <- df %>%
     dplyr::filter(stat == "goal_from_zone2") %>%
     dplyr::group_by(squadName) %>%
-    dplyr::summarise(goals2 = sum(value) * 2)
+    dplyr::summarise(goals2 = sum(value, na.rm = TRUE) * 2, .groups = "drop")
   goals <- dplyr::left_join(goals1, goals2, by = "squadName") %>%
-    dplyr::mutate(goals = goals + goals2) %>%
+    dplyr::mutate(
+      goals2 = dplyr::coalesce(goals2, 0),
+      goals = goals + goals2
+    ) %>%
     dplyr::select(-goals2)
   home <- df %>%
     dplyr::filter(stat == "homeTeam") %>%
@@ -59,7 +62,7 @@ matchPoints_pre_2020 <- function(df) {
     goals <- df %>%
         dplyr::filter(stat == "goals") %>%
         dplyr::group_by(squadName) %>%
-        dplyr::summarise(goals = sum(value))
+        dplyr::summarise(goals = sum(value, na.rm = TRUE), .groups = "drop")
     home <- df %>%
         dplyr::filter(stat == "homeTeam") %>%
         dplyr::group_by(squadName) %>%
@@ -107,9 +110,11 @@ matchPoints_pre_2020 <- function(df) {
                )
     points_new <- scores %>%
         dplyr::group_by(homeSquad, awaySquad) %>%
-        dplyr::summarise(homePoints = sum(homePoints),
-                         awayPoints = sum(awayPoints)) %>%
-        dplyr::ungroup()
+        dplyr::summarise(
+            homePoints = sum(homePoints, na.rm = TRUE),
+            awayPoints = sum(awayPoints, na.rm = TRUE),
+            .groups = "drop"
+        )
     df1 <- points_new %>%
         dplyr::select(dplyr::contains("home")) %>%
         dplyr::rename(squadName = homeSquad, points_qtr = homePoints)

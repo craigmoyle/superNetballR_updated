@@ -1,3 +1,7 @@
+safe_percentage <- function(goals_for, goals_against) {
+  ifelse(goals_against == 0, Inf, goals_for / goals_against)
+}
+
 #' Calculates ladder positions
 #'
 #' \code{ladders} calculates ladder positions at the end of a match.
@@ -27,15 +31,15 @@ ladders <- function(df, round_num = NULL, game_num = NULL, old_system = FALSE) {
       dplyr::filter(!(round >= round_num && game > game_num))
   }
   ladder <- match_results %>%
-    dplyr::group_by(squadName) %>%
-    dplyr::summarise(
-      games = n(),
-      goals_for = sum(goals),
-      goals_against = sum(goals - score_diff),
-      percentage = goals_for / goals_against,
-      points = as.integer(sum(points))
-    ) %>%
-    dplyr::arrange(dplyr::desc(points), dplyr::desc(percentage))
+      dplyr::group_by(squadName) %>%
+      dplyr::summarise(
+        games = n(),
+        goals_for = sum(goals),
+        goals_against = sum(goals - score_diff),
+        percentage = safe_percentage(goals_for, goals_against),
+        points = as.integer(sum(points))
+      ) %>%
+      dplyr::arrange(dplyr::desc(points), dplyr::desc(percentage))
   ladder
 }
 
@@ -52,13 +56,24 @@ matchResults <- function(df) {
     df
 }
 
+matchResults_pre_2020 <- function(df) {
+    df <- df %>%
+        dplyr::group_by(round, game) %>%
+        tidyr::nest() %>%
+        dplyr::group_by(round, game) %>%
+        dplyr::mutate(game_results = purrr::map(data, matchPoints_pre_2020)) %>%
+        dplyr::select(-data) %>%
+        tidyr::unnest(cols = c(game_results))
+    df
+}
+
 #' @rdname ladders
 #' @export
 ladders_pre_2020 <- function(df, round_num = NULL, game_num = NULL, old_system = FALSE) {
     if (!is.null(game_num) && is.null(round_num)) {
         stop("If game number is supplied, round number must also be supplied.")
     }
-    match_results <- matchResults(df = df)
+    match_results <- matchResults_pre_2020(df = df)
     if (!is.null(round_num) && is.null(game_num)) {
         match_results <- match_results %>%
             dplyr::filter(round <= round_num)
@@ -73,12 +88,11 @@ ladders_pre_2020 <- function(df, round_num = NULL, game_num = NULL, old_system =
                    games = n(),
                    goals_for = sum(goals),
                    goals_against = sum(goals - score_diff),
-                   percentage = goals_for / goals_against,
+                   percentage = safe_percentage(goals_for, goals_against),
                    points = as.integer(sum(points)),
-                   points_new = as.integer(sum(points_new))
-               ) %>%
+                    points_new = as.integer(sum(points_new))
+                ) %>%
         dplyr::arrange(dplyr::desc(points_new))
     if (old_system) ladder <- ladder %>% dplyr::arrange(dplyr::desc(points))
     ladder
 }
-

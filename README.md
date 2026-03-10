@@ -1,6 +1,6 @@
 # superNetballR
 
-[![Build Status](https://travis-ci.org/craigmoyle/superNetballR_updated.svg?branch=main)](https://travis-ci.org/craigmoyle/superNetballR_updated)
+[![R-CMD-check](https://github.com/craigmoyle/superNetballR_updated/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/craigmoyle/superNetballR_updated/actions/workflows/R-CMD-check.yaml)
 
 ## Description
 
@@ -9,6 +9,7 @@ This fork of `superNetballR` allows the downloading of super netball statistics 
 `superNetballR` contains helper functions that transform the downloaded data into usable tidy data.
 
 This repository is maintained at [craigmoyle/superNetballR_updated](https://github.com/craigmoyle/superNetballR_updated).
+The current Champion Data iStats portal still exposes the same zone-based result data model used by this package, and `downloadMatch()` now validates match identifiers before requesting the JSON feed.
 
 ## Installation
 

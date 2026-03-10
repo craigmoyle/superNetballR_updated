@@ -26,8 +26,11 @@ tidyMatch <- function(match) {
     final_period <- match$matchInfo$periodCompleted
     team_stats <- team_stats %>%
         dplyr::filter(period <= final_period) %>%
-        tidyr::gather(stat, value, -squadId, -squadName,
-                      -squadNickname, -squadCode, -period) %>%
+        tidyr::pivot_longer(
+            cols = -c(squadId, squadName, squadNickname, squadCode, period),
+            names_to = "stat",
+            values_to = "value"
+        ) %>%
         dplyr::mutate(
                    round = match$matchInfo$roundNumber,
                    game = match$matchInfo$matchNumber
@@ -61,8 +64,14 @@ tidyPlayers <- function(match) {
     player_stats <- player_stats %>%
         dplyr::filter(period <= final_period) %>%
         dplyr::select(-displayName) %>%
-        tidyr::gather(stat, value, -playerId, -shortDisplayName, -firstname,
-                      -surname, -period, -squadId, -squadName) %>%
+        tidyr::pivot_longer(
+            cols = -c(
+                playerId, shortDisplayName, firstname, surname,
+                period, squadId, squadName
+            ),
+            names_to = "stat",
+            values_to = "value"
+        ) %>%
         dplyr::mutate(
                    round = match$matchInfo$roundNumber,
                    game = match$matchInfo$matchNumber
