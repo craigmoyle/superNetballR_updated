@@ -31,6 +31,7 @@ remotes::install_github("craigmoyle/superNetballR_updated@main")
 - `downloadMatch()` validates competition, round, and game identifiers, retries transient HTTP failures, and errors clearly if the Champion Data payload is missing `matchStats`.
 - `matchPoints()` and `ladders()` implement the current super shot scoring model for 2020+ data.
 - `matchPoints_pre_2020()` and `ladders_pre_2020()` remain available for legacy seasons and older points systems.
+- `team_colours` includes the current Melbourne Mavericks entry while retaining the historical Magpies row needed by the bundled 2017 data.
 - The package includes a `testthat` suite and a GitHub Actions `R-CMD-check` workflow for ongoing maintenance.
 
 ## Development

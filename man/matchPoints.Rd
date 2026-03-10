@@ -12,10 +12,10 @@ matchPoints(df)
 \value{
 A data frame containing the final scores, and points for the ladder.
 }
+\description{
+\code{matchPoints} calculates final match goals and score difference.
+}
 \details{
 \code{matchPoints()} treats \code{goal_from_zone1} as one point and
 \code{goal_from_zone2} as two points, matching the current super shot era.
-}
-\description{
-\code{matchPoints} calculates final match goals and score difference.
 }

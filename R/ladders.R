@@ -38,7 +38,7 @@ ladders <- function(df, round_num = NULL, game_num = NULL, old_system = FALSE) {
   ladder <- match_results %>%
       dplyr::group_by(squadName) %>%
       dplyr::summarise(
-        games = n(),
+        games = dplyr::n(),
         goals_for = sum(goals),
         goals_against = sum(goals - score_diff),
         percentage = safe_percentage(goals_for, goals_against),
@@ -90,7 +90,7 @@ ladders_pre_2020 <- function(df, round_num = NULL, game_num = NULL, old_system =
     ladder <- match_results %>%
         dplyr::group_by(squadName) %>%
         dplyr::summarise(
-                   games = n(),
+                   games = dplyr::n(),
                    goals_for = sum(goals),
                    goals_against = sum(goals - score_diff),
                    percentage = safe_percentage(goals_for, goals_against),

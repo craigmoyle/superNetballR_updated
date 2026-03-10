@@ -5,7 +5,7 @@
 \alias{team_colours}
 \title{Team colours.}
 \format{
-A data frame with 8 rows and 3 variables:
+A data frame with 9 rows and 3 variables:
 \describe{
   \item{squadName}{Full squad name}
   \item{squadId}{Unique squad number}
@@ -16,6 +16,8 @@ A data frame with 8 rows and 3 variables:
 team_colours
 }
 \description{
-A dataset containing hex-coded team colours for each team.
+A dataset containing hex-coded team colours for the current Super Netball
+competition teams, plus the historical Magpies entry used by the bundled
+2017 data.
 }
 \keyword{datasets}

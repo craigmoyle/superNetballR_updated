@@ -14,7 +14,7 @@ build:
 	R CMD build .
 
 test:
-	Rscript -e "testthat::test_dir('tests/testthat', reporter = 'summary', stop_on_failure = TRUE)"
+	Rscript -e "testthat::test_local('.', reporter = 'summary', stop_on_failure = TRUE)"
 
 check: build
 	R CMD check --no-manual --as-cran $(PKG_TARBALL)

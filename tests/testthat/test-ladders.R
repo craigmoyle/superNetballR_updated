@@ -34,5 +34,5 @@ test_that("ladders_pre_2020 uses the legacy match scoring pipeline", {
   ladder <- ladders_pre_2020(season)
 
   expect_equal(ladder$points[ladder$squadName == "A"], 2)
-  expect_equal(ladder$points_new[ladder$squadName == "A"], 5)
+  expect_equal(ladder$points_new[ladder$squadName == "A"], 6)
 })

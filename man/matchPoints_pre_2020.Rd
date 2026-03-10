@@ -12,12 +12,12 @@ matchPoints_pre_2020(df)
 \value{
 A data frame containing the final scores, and points for the ladder.
 }
+\description{
+\code{matchPoints_pre_2020} calculates final match goals and score
+difference, for seasons pre-2020.
+}
 \details{
 \code{matchPoints_pre_2020()} uses the original goals statistic for match
 results and also reports the newer quarter-points summary in
 \code{points_new}.
-}
-\description{
-\code{matchPoints_pre_2020} calculates final match goals and score
-difference, for seasons pre-2020.
 }

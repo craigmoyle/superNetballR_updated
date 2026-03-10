@@ -27,12 +27,12 @@ Data frame containing the ladder position of all teams. If round and
     game are not supplied, the ladder position is calculated using all match
     data present in the \code{df} supplied.
 }
+\description{
+\code{ladders} calculates ladder positions at the end of a match.
+}
 \details{
 \code{ladders()} uses the current 2020+ scoring helpers, while
 \code{ladders_pre_2020()} uses the legacy scoring pipeline. Ladder
 percentages are protected against divide-by-zero by returning \code{Inf}
 when a team has not conceded.
-}
-\description{
-\code{ladders} calculates ladder positions at the end of a match.
 }

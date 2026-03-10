@@ -53,6 +53,11 @@ tidyPlayers <- function(match) {
     player_info <- match$playerInfo$player
     player_info <- dplyr::bind_rows(player_info)
     player_stats <- dplyr::left_join(player_stats, player_info, by = "playerId")
+    if (all(c("squadId.x", "squadId.y") %in% names(player_stats))) {
+        player_stats <- player_stats %>%
+            dplyr::mutate(squadId = dplyr::coalesce(squadId.x, squadId.y)) %>%
+            dplyr::select(-squadId.x, -squadId.y)
+    }
     squad_info <- match$teamInfo$team
     squad_info <- dplyr::bind_rows(squad_info)
     squad_info <- dplyr::select(squad_info, squadId, squadName)
@@ -70,7 +75,8 @@ tidyPlayers <- function(match) {
                 period, squadId, squadName
             ),
             names_to = "stat",
-            values_to = "value"
+            values_to = "value",
+            values_transform = list(value = as.character)
         ) %>%
         dplyr::mutate(
                    round = match$matchInfo$roundNumber,
