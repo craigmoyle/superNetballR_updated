@@ -79,7 +79,7 @@ downloadMatch <- function(comp_id, round_id, game_id) {
         terminate_on = c(400, 401, 403, 404),
         quiet = TRUE
     )
-    httr::stop_for_status(dat, call. = FALSE)
+    httr::stop_for_status(dat)
     extract_match_stats(httr::content(
         dat,
         as = "parsed",
